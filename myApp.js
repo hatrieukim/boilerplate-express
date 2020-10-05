@@ -1,8 +1,11 @@
-
 var express = require('express');
 var app = express();
 const dotenv = require('dotenv');
 dotenv.config();
+//const mylogger = import ('./mylogger.js')
+const {logger} = require('./mylogger');
+
+app.use(logger); // middleware function take 3 params: req, res, next
 
 // --> 7)  Mount the Logger middleware here
 
@@ -27,7 +30,6 @@ app.use(express.static(__dirname + "/public"))
 /** 5) serve JSON on a specific route */
 app.get('/json', (req, res) => {
     let myMessage = 'hello from bun hehe';
-    console.log(process.env);
     if(process.env.MESSAGE_STYLE == 'uppercase') myMessage = myMessage.toUpperCase();
 
     res.json({'message': myMessage})
@@ -39,9 +41,13 @@ app.get('/json', (req, res) => {
 /** 7) Root-level Middleware - A logger */
 //  place it before all the routes !
 
-
 /** 8) Chaining middleware. A Time server */
-
+app.get('/middleTime', function(req,res, next) {
+    req.MyTime = Date().toString();
+    next();
+}, function(req, res) {
+    res.json({'message': req.MyTime})
+}) 
 
 /** 9)  Get input from client - Route parameters */
 
