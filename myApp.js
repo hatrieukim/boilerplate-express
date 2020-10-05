@@ -1,6 +1,8 @@
 
 var express = require('express');
 var app = express();
+const dotenv = require('dotenv');
+dotenv.config();
 
 // --> 7)  Mount the Logger middleware here
 
@@ -24,7 +26,11 @@ app.use(express.static(__dirname + "/public"))
 
 /** 5) serve JSON on a specific route */
 app.get('/json', (req, res) => {
-    res.json({'message': 'hello from bun hehe'})
+    let myMessage = 'hello from bun hehe';
+    console.log(process.env);
+    if(process.env.MESSAGE_STYLE == 'uppercase') myMessage = myMessage.toUpperCase();
+
+    res.json({'message': myMessage})
 })
 
 /** 6) Use the .env file to configure the app */
