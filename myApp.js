@@ -3,14 +3,14 @@ var app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 const {logger} = require('./mylogger');
+const bodyParser = require('body-parser');
 
-app.use(logger); // middleware function take 3 params: req, res, next
 
 // --> 7)  Mount the Logger middleware here
-
+app.use(logger); // middleware function take 3 params: req, res, next
 
 // --> 11)  Mount the body-parser middleware  here
-
+app.use(bodyParser.urlencoded({extended: false}));
 
 /** 1) Meet the node console. */
 console.log("Hello World")
@@ -68,7 +68,13 @@ app.get('/name', (req, res) => {
 
 
 /** 12) Get data form POST  */
+app.post('/name', (req, res) => {
+    let t1 = req.body.first;
+    let t2 = req.body.last;
 
+    let {first,last} = req.body;
+    res.send('you again? ' + t1 + ' ' + t2 + ' and another one' + first + last);
+})
 
 
 // This would be part of the basic setup of an Express app
