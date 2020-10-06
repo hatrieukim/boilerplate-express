@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 const dotenv = require('dotenv');
 dotenv.config();
-//const mylogger = import ('./mylogger.js')
 const {logger} = require('./mylogger');
 
 app.use(logger); // middleware function take 3 params: req, res, next
@@ -50,11 +49,19 @@ app.get('/middleTime', function(req,res, next) {
 }) 
 
 /** 9)  Get input from client - Route parameters */
-
+app.get('/:word/echo', (req, res) => {
+    const word = req.params.word;
+    res.json({'word' : word});
+})
 
 /** 10) Get input from client - Query parameters */
 // /name?first=<firstname>&last=<lastname>
+app.get('/name', (req, res) => {
+    let firstname = req.query.first;
+    let lastname = req.query.last;
 
+    res.send('ok so you are ' + firstname.toUpperCase() + ' ' + lastname.toUpperCase() + ' hehe');
+})
   
 /** 11) Get ready for POST Requests - the `body-parser` */
 // place it before all the routes !
